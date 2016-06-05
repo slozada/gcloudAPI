@@ -67,6 +67,41 @@ class OffSearch(webapp2.RequestHandler):
 		results={'keys':[x.id() for x in keys]}
 		self.response.write(json.dumps(results)) 	
 
+class EditOff(webapp2.RequestHandler):
+	def put(self,**kwargs):
+		if 'application/json' not in self.request.accept:
+			self.response.status=406
+			self.response.status_message = "Not acceptable, API only supports json calls"
+		if 'id' in kwargs:
+			print kwargs['id']
+			offer=ndb.Key(db_models.Off, int (kwargs['id'])).get()
+			if not offer:
+				self.response.status=404
+				self.response.status_message="User Not Found"
+				return
+			print offer.to_dict()	
+			code=self.request.get('code',default_value=None)
+			product=self.request.get('product',default_value=None)
+			discountPer=self.request.get('discountPer',default_value=None)
+			validUntil=self.request.get('validUntil',default_value=None)
+			validWebsite=self.request.get('validWebsite',default_value=None)
+			print product 	
+			if code:
+				offer.code=code
+			if product:
+				offer.product=product
+			if discountPer:
+				offer.discountPer=discountPer
+			if validUntil:
+				offer.validUntil=validUntil
+			if validWebsite:
+				offer.validWebsite=validWebsite
+			
+			print offer.to_dict()
+			offer.put()
+		self.response.write(json.dumps(offer.to_dict()))
+		return
+
 class OfferDelete(webapp2.RequestHandler):
 	def delete(self,**kwargs):
 		if 'application/json' not in self.request.accept:
