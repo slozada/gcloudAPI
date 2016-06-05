@@ -8,7 +8,7 @@ app = webapp2.WSGIApplication([
 
 app.router.add(webapp2.Route(r'/offer/<id:[0-9]+><:/?>','offer.Offer'))
 app.router.add(webapp2.Route(r'/user/<id:[0-9]+><:/?>','user.User'))
-app.router.add(webapp2.Route(r'/offer/search','offer.OffSearch'))
+app.router.add(webapp2.Route(r'/user/search','user.UserSearch'))
 app.router.add(webapp2.Route(r'/user','user.User'))
 app.router.add(webapp2.Route(r'/product/delete/<id:[0-9]+><:/?>','product.ProductDelete'))
 app.router.add(webapp2.Route(r'/offer/delete/<id:[0-9]+><:/?>','offer.OfferDelete'))

@@ -89,6 +89,19 @@ class UserOff(webapp2.RequestHandler):
 		return
 
 
+class UserSearch(webapp2.RequestHandler):
+	def post(self):
+		if 'application/json' not in self.request.accept:
+			self.response.status=406
+			self.response.status_message="Not Acceptable, API only supports JSON"
+			return
+		q=db_models.User.query()
+		if self.request.get('email',None):
+			q=q.filter(db_models.User.email==self.request.get('email'))
+		keys=q.fetch(keys_only=True)
+		results={'keys':[x.id() for x in keys]}
+		self.response.write(json.dumps(results)) 	
+
 class ProductDelete(webapp2.RequestHandler):
 	def delete(self,**kwargs):
 		if 'application/json' not in self.request.accept:
